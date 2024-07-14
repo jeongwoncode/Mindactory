@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 
-        Debug.Log($"Input: {movement}"); // 입력값 로그
+        //Debug.Log($"Input: {movement}"); // 입력값 로그
     }
 
     private void FixedUpdate()
@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
         {
             Vector2 newPosition = rb.position + movement * moveSpeed * Time.fixedDeltaTime;
             rb.MovePosition(newPosition);
-            Debug.Log($"New Position: {newPosition}"); // 새 위치 로그
+            //Debug.Log($"New Position: {newPosition}"); // 새 위치 로그
         }
     }
 }
