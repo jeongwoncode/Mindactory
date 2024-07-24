@@ -1,38 +1,49 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIManager : MonoBehaviour
+namespace Mindustry
 {
-    public Button minerButton;
-    public Button smelterButton;
-    public BuildingManager buildingManager;
-
-    void Start()
+    public class UIManager : MonoBehaviour
     {
-        if (minerButton == null)
-        {
-            Debug.LogError("Miner Button is not assigned!");
-        }
-        if (smelterButton == null)
-        {
-            Debug.LogError("Smelter Button is not assigned!");
-        }
-        if (buildingManager == null)
-        {
-            Debug.LogError("Building Manager is not assigned!");
-        }
-        
-        minerButton.onClick.AddListener(OnMinerButtonClick);
-        smelterButton.onClick.AddListener(OnSmelterButtonClick);
-    }
+        public Button minerButton;
+        public Button smelterButton;
+        public BuildingManager buildingManager;
 
-    void OnMinerButtonClick()
-    {
-        buildingManager.SelectMiner();
-    }
+        void Start()
+        {
+            if (buildingManager == null)
+            {
+                Debug.LogError("BuildingManager is not assigned!");
+                return;
+            }
 
-    void OnSmelterButtonClick()
-    {
-        buildingManager.SelectSmelter();
+            if (minerButton != null)
+            {
+                minerButton.onClick.AddListener(OnMinerButtonClick);
+            }
+            else
+            {
+                Debug.LogError("Miner Button is not assigned!");
+            }
+
+            if (smelterButton != null)
+            {
+                smelterButton.onClick.AddListener(OnSmelterButtonClick);
+            }
+            else
+            {
+                Debug.LogError("Smelter Button is not assigned!");
+            }
+        }
+
+        void OnMinerButtonClick()
+        {
+            buildingManager.SelectMiner();
+        }
+
+        void OnSmelterButtonClick()
+        {
+            buildingManager.SelectSmelter();
+        }
     }
 }

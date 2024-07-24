@@ -1,25 +1,36 @@
 using UnityEngine;
 
-public class BuildingManager : MonoBehaviour
+namespace Mindustry
 {
-    public GameObject minerPrefab;
-    public GameObject smelterPrefab;
-    private GameObject selectedBuilding;
-
-    public void SelectMiner()
+    public class BuildingManager : MonoBehaviour
     {
-        selectedBuilding = minerPrefab;
-        Debug.Log("Miner selected");
-    }
+        public GameObject minerPrefab;
+        public GameObject smelterPrefab;
 
-    public void SelectSmelter()
-    {
-        selectedBuilding = smelterPrefab;
-        Debug.Log("Smelter selected");
-    }
+        private BuildingSelector buildingSelector;
 
-    public GameObject GetSelectedBuilding()
-    {
-        return selectedBuilding;
+        void Start()
+        {
+            buildingSelector = GetComponent<BuildingSelector>();
+            if (buildingSelector == null)
+            {
+                Debug.LogError("BuildingSelector component is missing!");
+            }
+        }
+
+        public void SelectMiner()
+        {
+            buildingSelector.SetSelectedBuilding(minerPrefab);
+        }
+
+        public void SelectSmelter()
+        {
+            buildingSelector.SetSelectedBuilding(smelterPrefab);
+        }
+
+        public GameObject GetSelectedBuilding()
+        {
+            return buildingSelector.GetSelectedBuilding();
+        }
     }
 }

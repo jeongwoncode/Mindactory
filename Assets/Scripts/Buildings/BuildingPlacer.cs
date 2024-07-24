@@ -1,38 +1,55 @@
 using System.Collections.Generic; // HashSet을 사용하기 위해 추가
 using UnityEngine;
 
-public class BuildingPlacer : MonoBehaviour
+namespace Mindustry
 {
-    public BuildingManager buildingManager;
-    public Grid grid;
-    private HashSet<Vector3Int> occupiedCells = new HashSet<Vector3Int>();
-
-    void Update()
+    public class BuildingPlacer : MonoBehaviour
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            PlaceBuilding();
-        }
-    }
+        public BuildingManager buildingManager;
+        public Grid grid;
+        private HashSet<Vector3Int> occupiedCells = new HashSet<Vector3Int>();
 
-    void PlaceBuilding()
-    {
-        GameObject selectedBuilding = buildingManager.GetSelectedBuilding();
-        if (selectedBuilding != null)
+        void Update()
         {
-            Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector3Int cellPosition = grid.WorldToCell(mouseWorldPos);
-
-            // 현재 셀이 점유되지 않은 경우에만 건물 배치
-            if (!occupiedCells.Contains(cellPosition))
+            if (Input.GetMouseButtonDown(0) && !Utils.IsPointerOverUIElement())
             {
-                Vector3 cellCenterPosition = grid.GetCellCenterWorld(cellPosition);
-                Instantiate(selectedBuilding, cellCenterPosition, Quaternion.identity);
-                occupiedCells.Add(cellPosition);
+                PlaceBuilding();
             }
-            else
+        }
+
+        void PlaceBuilding()
+        {
+            GameObject selectedBuilding = buildingManager.GetSelectedBuilding();
+            if (selectedBuilding != null)
             {
-                Debug.Log("Cell is already occupied!");
+                Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                Vector3Int cellPosition = grid.WorldToCell(mouseWorldPos);
+
+                if (!occupiedCells.Contains(cellPosition))
+                {
+                    Vector3 cellCenterPosition = grid.GetCellCenterWorld(cellPosition);
+                    GameObject building = Instantiate(selectedBuilding, cellCenterPosition, Quaternion.identity);
+                    occupiedCells.Add(cellPosition);
+
+                    // 자원과 가까운 위치에 건물 배치
+                    Collider2D[] colliders = Physics2D.OverlapCircleAll(cellCenterPosition, 1f);
+                    foreach (var collider in colliders)
+                    {
+                        if (collider.CompareTag("Resource"))
+                        {
+                            Miner miner = building.GetComponent<Miner>();
+                            if (miner != null)
+                            {
+                                miner.SetTargetResource(collider.transform);
+                            }
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    Debug.Log("Cell is already occupied!");
+                }
             }
         }
     }
