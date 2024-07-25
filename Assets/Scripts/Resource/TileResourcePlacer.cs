@@ -1,12 +1,14 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using System.Collections.Generic;
 
 public class TileResourcePlacer : MonoBehaviour
 {
-    public Tilemap tilemap;
-    public IResourceFactory resourceFactory;
-    public List<ResourceData> resources;
+    public Tilemap resourceTilemap;
+    public TileBase ironOreTile;
+    public TileBase copperOreTile;
+
+    public GameObject ironOrePrefab;
+    public GameObject copperOrePrefab;
 
     void Start()
     {
@@ -15,26 +17,29 @@ public class TileResourcePlacer : MonoBehaviour
 
     void PlaceResources()
     {
-        BoundsInt bounds = tilemap.cellBounds;
-        TileBase[] allTiles = tilemap.GetTilesBlock(bounds);
+        BoundsInt bounds = resourceTilemap.cellBounds;
+        TileBase[] allTiles = resourceTilemap.GetTilesBlock(bounds);
 
         for (int x = 0; x < bounds.size.x; x++)
         {
             for (int y = 0; y < bounds.size.y; y++)
             {
                 TileBase tile = allTiles[x + y * bounds.size.x];
-                if (tile != null)
+                if (tile == ironOreTile)
                 {
                     Vector3Int cellPosition = new Vector3Int(bounds.x + x, bounds.y + y, 0);
-                    Vector3 worldPosition = tilemap.CellToWorld(cellPosition) + tilemap.tileAnchor;
-
-                    foreach (ResourceData resourceData in resources)
-                    {
-                        if (tile.name == resourceData.resourceName)
-                        {
-                            resourceFactory.CreateResource(resourceData, worldPosition);
-                        }
-                    }
+                    Vector3 worldPosition = resourceTilemap.CellToWorld(cellPosition) + resourceTilemap.tileAnchor;
+                    GameObject ironOre = Instantiate(ironOrePrefab, worldPosition, Quaternion.identity);
+                    ironOre.tag = "Resource";
+                    Debug.Log("Iron ore placed at: " + worldPosition);
+                }
+                else if (tile == copperOreTile)
+                {
+                    Vector3Int cellPosition = new Vector3Int(bounds.x + x, bounds.y + y, 0);
+                    Vector3 worldPosition = resourceTilemap.CellToWorld(cellPosition) + resourceTilemap.tileAnchor;
+                    GameObject copperOre = Instantiate(copperOrePrefab, worldPosition, Quaternion.identity);
+                    copperOre.tag = "Resource";
+                    Debug.Log("Copper ore placed at: " + worldPosition);
                 }
             }
         }

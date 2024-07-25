@@ -1,32 +1,57 @@
 using UnityEngine;
 
-namespace Mindustry
+public class Miner : MonoBehaviour
 {
-    public class Miner : MonoBehaviour
+    public float miningSpeed = 1f;
+    private Resource currentResource;
+
+    void Start()
     {
-        public float mineSpeed = 1f;
-        private Transform targetResource;
+        FindResource();
+    }
 
-        void Start()
+    void Update()
+    {
+        if (currentResource != null)
         {
-            InvokeRepeating(nameof(Mine), 1f, mineSpeed);
+            MineResource();
         }
-
-        public void SetTargetResource(Transform resource)
+        else
         {
-            targetResource = resource;
+            FindResource();
         }
+    }
 
-        void Mine()
+    void FindResource()
+    {
+        Vector3 position = transform.position;
+        Collider2D[] colliders = Physics2D.OverlapPointAll(position);
+
+        foreach (Collider2D collider in colliders)
         {
-            if (targetResource == null)
+            Resource resource = collider.GetComponent<Resource>();
+            if (resource != null)
             {
-                Debug.LogError("Target Resource is not assigned!");
+                currentResource = resource;
+                Debug.Log("Resource found: " + resource.name);
                 return;
             }
+        }
 
-            // 자원 채굴 로직 구현
-            Debug.Log("Mining resource: " + targetResource.name);
+        Debug.LogError("No resource found at this location.");
+    }
+
+    void MineResource()
+    {
+        if (currentResource != null)
+        {
+            currentResource.amount -= miningSpeed * Time.deltaTime;
+            if (currentResource.amount <= 0)
+            {
+                Destroy(currentResource.gameObject);
+                currentResource = null;
+                Debug.Log("Resource depleted.");
+            }
         }
     }
 }

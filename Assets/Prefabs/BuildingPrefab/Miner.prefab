@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 5943416740518796840}
   - component: {fileID: 5943416740518796841}
   - component: {fileID: 5943416740518796847}
+  - component: {fileID: 7275923621559471877}
   m_Layer: 0
   m_Name: Miner
-  m_TagString: Untagged
+  m_TagString: Miner
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -73,7 +74,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 3
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0.22352938, g: 0.8745098, b: 0.26577577, a: 1}
   m_FlipX: 0
@@ -111,3 +112,16 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &7275923621559471877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5943416740518796842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1f58e71ff089ed4ebb915ca4ed82c87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mineSpeed: 1

@@ -1,56 +1,71 @@
-using System.Collections.Generic; // HashSet을 사용하기 위해 추가
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.Tilemaps;
+using System.Collections.Generic;
 
-namespace Mindustry
+public class BuildingPlacer : MonoBehaviour
 {
-    public class BuildingPlacer : MonoBehaviour
+    public Tilemap mapTilemap;
+    public Tilemap resourceTilemap;
+    public GameObject minerPrefab;
+    public GameObject smelterPrefab;
+    private GameObject selectedBuilding;
+
+    void Update()
     {
-        public BuildingManager buildingManager;
-        public Grid grid;
-        private HashSet<Vector3Int> occupiedCells = new HashSet<Vector3Int>();
-
-        void Update()
+        if (Input.GetMouseButtonDown(0))
         {
-            if (Input.GetMouseButtonDown(0) && !Utils.IsPointerOverUIElement())
+            // UI 요소 클릭 여부를 확인
+            if (IsPointerOverUIObject())
             {
-                PlaceBuilding();
+                return;
+            }
+
+            Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector3Int cellPos = mapTilemap.WorldToCell(mouseWorldPos);
+            PlaceBuilding(cellPos);
+        }
+    }
+
+    public void SelectBuilding(GameObject building)
+    {
+        selectedBuilding = building;
+        Debug.Log("Selected Building: " + building.name);
+    }
+
+    void PlaceBuilding(Vector3Int cellPos)
+    {
+        if (selectedBuilding == null) return;
+
+        Vector3 cellCenterPos = mapTilemap.GetCellCenterWorld(cellPos);
+        TileBase tile = resourceTilemap.GetTile(cellPos);
+        Debug.Log("Placing building at cell position: " + cellPos);
+
+        if (selectedBuilding == minerPrefab)
+        {
+            if (tile != null)
+            {
+                Instantiate(selectedBuilding, cellCenterPos, Quaternion.identity);
+                Debug.Log("Miner placed at: " + cellCenterPos);
+            }
+            else
+            {
+                Debug.Log("Miner can only be placed on resource tiles.");
             }
         }
-
-        void PlaceBuilding()
+        else if (selectedBuilding == smelterPrefab)
         {
-            GameObject selectedBuilding = buildingManager.GetSelectedBuilding();
-            if (selectedBuilding != null)
-            {
-                Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                Vector3Int cellPosition = grid.WorldToCell(mouseWorldPos);
-
-                if (!occupiedCells.Contains(cellPosition))
-                {
-                    Vector3 cellCenterPosition = grid.GetCellCenterWorld(cellPosition);
-                    GameObject building = Instantiate(selectedBuilding, cellCenterPosition, Quaternion.identity);
-                    occupiedCells.Add(cellPosition);
-
-                    // 자원과 가까운 위치에 건물 배치
-                    Collider2D[] colliders = Physics2D.OverlapCircleAll(cellCenterPosition, 1f);
-                    foreach (var collider in colliders)
-                    {
-                        if (collider.CompareTag("Resource"))
-                        {
-                            Miner miner = building.GetComponent<Miner>();
-                            if (miner != null)
-                            {
-                                miner.SetTargetResource(collider.transform);
-                            }
-                            break;
-                        }
-                    }
-                }
-                else
-                {
-                    Debug.Log("Cell is already occupied!");
-                }
-            }
+            Instantiate(selectedBuilding, cellCenterPos, Quaternion.identity);
+            Debug.Log("Smelter placed at: " + cellCenterPos);
         }
+    }
+
+    private bool IsPointerOverUIObject()
+    {
+        PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+        eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+        return results.Count > 0;
     }
 }
