@@ -1,9 +1,18 @@
 using UnityEngine;
 
-public class ResourceFactory
+namespace Mindactory
 {
-    public GameObject CreateResource(ResourceData resourceData, Vector3 position)
+    public class ResourceFactory : IResourceFactory
     {
-        return Object.Instantiate(resourceData.resourcePrefab, position, Quaternion.identity);
+        public ResourceData CreateResource(string resourceName, int amount, int capacity, GameObject prefab, Vector2 position)
+        {
+            ResourceData newResource = ScriptableObject.CreateInstance<ResourceData>();
+            newResource.ResourceName = resourceName;
+            newResource.Amount = amount;
+            newResource.Capacity = capacity;
+            newResource.ResourcePrefab = prefab;
+            newResource.Position = position;
+            return newResource;
+        }
     }
 }

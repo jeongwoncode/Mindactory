@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Mindustry
+namespace Mindactory
 {
     public class ResourcePlacer : MonoBehaviour
     {

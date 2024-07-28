@@ -1,56 +1,30 @@
 using UnityEngine;
 
-public class Miner : MonoBehaviour
+namespace Mindactory
 {
-    public float miningSpeed = 1f;
-    private Resource currentResource;
-
-    void Start()
+    public class Miner : MonoBehaviour
     {
-        FindResource();
-    }
+        public Vector3Int position;
+        public ResourceManager resourceManager;
 
-    void Update()
-    {
-        if (currentResource != null)
+        void Start()
         {
-            MineResource();
+            resourceManager = FindObjectOfType<ResourceManager>();
+            CheckResource();
         }
-        else
-        {
-            FindResource();
-        }
-    }
 
-    void FindResource()
-    {
-        Vector3 position = transform.position;
-        Collider2D[] colliders = Physics2D.OverlapPointAll(position);
-
-        foreach (Collider2D collider in colliders)
+        void CheckResource()
         {
-            Resource resource = collider.GetComponent<Resource>();
+            Vector2Int cellPosition = (Vector2Int)position; // 변경된 부분
+            ResourceData resource = resourceManager.GetResourceAtPosition(cellPosition);
+
             if (resource != null)
             {
-                currentResource = resource;
-                Debug.Log("Resource found: " + resource.name);
-                return;
+                Debug.Log("Resource found: " + resource.ResourceName);
             }
-        }
-
-        Debug.LogError("No resource found at this location.");
-    }
-
-    void MineResource()
-    {
-        if (currentResource != null)
-        {
-            currentResource.amount -= miningSpeed * Time.deltaTime;
-            if (currentResource.amount <= 0)
+            else
             {
-                Destroy(currentResource.gameObject);
-                currentResource = null;
-                Debug.Log("Resource depleted.");
+                Debug.LogError("No resource found at this location.");
             }
         }
     }

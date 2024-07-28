@@ -1,6 +1,9 @@
 using UnityEngine;
 
-public interface IResourceFactory
+namespace Mindactory
 {
-    GameObject CreateResource(ResourceData resourceData, Vector3 position);
+    public interface IResourceFactory
+    {
+        ResourceData CreateResource(string resourceName, int amount, int capacity, GameObject prefab, Vector2 position);
+    }
 }

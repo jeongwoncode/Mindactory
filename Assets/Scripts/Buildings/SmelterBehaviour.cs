@@ -1,28 +1,61 @@
 using UnityEngine;
 
-public class SmelterBehaviour : MonoBehaviour
+namespace Mindactory
 {
-    public float processTime = 3f;
-    public string inputResource = "Iron";
-    public string outputResource = "Steel";
-    private float timer = 0f;
-
-    private void Update()
+    public class SmelterBehaviour : MonoBehaviour
     {
-        timer += Time.deltaTime;
-        if (timer >= processTime)
+        public float processingTime = 2f; // Smelter processing time
+        private float processTimer = 0f;
+        private bool isProcessing = false;
+        private ResourceManager resourceManager;
+
+        void Start()
         {
-            Process();
-            timer = 0f;
+            resourceManager = FindObjectOfType<ResourceManager>();
         }
-    }
 
-    private void Process()
-    {
-        if (ResourceManager.Instance.UseResource(inputResource, 1))
+        void Update()
         {
-            ResourceManager.Instance.AddResource(outputResource, 1);
-            ConveyorSystem.Instance.AddItemToConveyor(outputResource, transform.position, transform.position + Vector3.right, 1f);
+            if (isProcessing)
+            {
+                processTimer += Time.deltaTime;
+                if (processTimer >= processingTime)
+                {
+                    Process();
+                    processTimer = 0f;
+                    isProcessing = false;
+                }
+            }
+        }
+
+        void OnMouseDown()
+        {
+            Vector2 position = new Vector2(transform.position.x, transform.position.y);
+            ResourceData resource = resourceManager.GetResourceAtPosition(position);
+            if (resource != null)
+            {
+                isProcessing = true;
+            }
+            else
+            {
+                Debug.LogError("No resource found at this location.");
+            }
+        }
+
+        private void Process()
+        {
+            // Process the resource
+            Vector2 position = new Vector2(transform.position.x, transform.position.y);
+            ResourceData resource = resourceManager.GetResourceAtPosition(position);
+            if (resource != null)
+            {
+                resourceManager.CollectResource(resource);
+                Debug.Log("Resource processed!");
+            }
+            else
+            {
+                Debug.LogError("No resource found at this location.");
+            }
         }
     }
 }

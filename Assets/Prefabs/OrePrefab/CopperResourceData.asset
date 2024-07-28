@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 68c3a49619896ad4a9ea886b35f3e3af, type: 3}
-  m_Name: IronOreData
+  m_Name: CopperResourceData
   m_EditorClassIdentifier: 
-  resourceName: Iron
-  amount: 5
-  capacity: 10
-  resourcePrefab: {fileID: 2647347935477543953, guid: 3fd26564c8744c045a9679b3f738eb4f, type: 3}
+  ResourceName: copper
+  Amount: 1
+  Capacity: 1
+  ResourcePrefab: {fileID: 981470115171063346, guid: 496e4534b3c0e0445a34c419f872550c, type: 3}
+  Position: {x: 0, y: 0}

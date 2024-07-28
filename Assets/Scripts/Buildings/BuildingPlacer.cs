@@ -9,6 +9,7 @@ public class BuildingPlacer : MonoBehaviour
     public Tilemap resourceTilemap;
     public GameObject minerPrefab;
     public GameObject smelterPrefab;
+    public GameObject conveyorPrefab;
     private GameObject selectedBuilding;
 
     void Update()
@@ -57,6 +58,11 @@ public class BuildingPlacer : MonoBehaviour
         {
             Instantiate(selectedBuilding, cellCenterPos, Quaternion.identity);
             Debug.Log("Smelter placed at: " + cellCenterPos);
+        }
+        else if (selectedBuilding == conveyorPrefab)
+        {
+            Instantiate(selectedBuilding, cellCenterPos, Quaternion.identity);
+            Debug.Log("Conveyor placed at: " + cellCenterPos);
         }
     }
 

@@ -27,4 +27,16 @@ public class BuildingManager : MonoBehaviour
             Debug.LogError("BuildingPlacer is not assigned!");
         }
     }
+
+        public void SelectConveyor()
+    {
+        if (buildingPlacer != null)
+        {
+            buildingPlacer.SelectBuilding(buildingPlacer.conveyorPrefab);
+        }
+        else
+        {
+            Debug.LogError("BuildingPlacer is not assigned!");
+        }
+    }
 }
