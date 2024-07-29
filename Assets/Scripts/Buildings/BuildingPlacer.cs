@@ -54,15 +54,10 @@ public class BuildingPlacer : MonoBehaviour
                 Debug.Log("Miner can only be placed on resource tiles.");
             }
         }
-        else if (selectedBuilding == smelterPrefab)
+        else if (selectedBuilding == smelterPrefab || selectedBuilding == conveyorPrefab)
         {
             Instantiate(selectedBuilding, cellCenterPos, Quaternion.identity);
-            Debug.Log("Smelter placed at: " + cellCenterPos);
-        }
-        else if (selectedBuilding == conveyorPrefab)
-        {
-            Instantiate(selectedBuilding, cellCenterPos, Quaternion.identity);
-            Debug.Log("Conveyor placed at: " + cellCenterPos);
+            Debug.Log(selectedBuilding.name + " placed at: " + cellCenterPos);
         }
     }
 

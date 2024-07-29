@@ -124,6 +124,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99d2afeca55dd7740a311ed987b72ca1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  processTime: 3
-  inputResource: Iron
-  outputResource: Steel
+  newIngotPrefab: {fileID: 3546017964169459676, guid: 54c8e15b7e1a32042bd5677fdb379eea, type: 3}
+  processingTime: 5

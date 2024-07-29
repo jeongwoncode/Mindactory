@@ -1,14 +1,13 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
-namespace Mindactory
+[CreateAssetMenu(fileName = "New Resource", menuName = "Resource Data")]
+public class ResourceData : ScriptableObject
 {
-    [CreateAssetMenu(fileName = "ResourceData", menuName = "ScriptableObjects/ResourceData", order = 1)]
-    public class ResourceData : ScriptableObject
-    {
-        public string ResourceName;
-        public int Amount;
-        public int Capacity;
-        public GameObject ResourcePrefab;
-        public Vector2 Position;
-    }
+    public string resourceName;
+    public int amount;
+    public int capacity;
+    public GameObject resourcePrefab;
+    public Vector3Int position;
+    public TileBase tile;
 }

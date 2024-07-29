@@ -1,33 +1,18 @@
 using UnityEngine;
-using System.Collections.Generic;
 
 public class BuildingSystem : MonoBehaviour
 {
-    public static BuildingSystem Instance { get; private set; }
+    public static BuildingSystem Instance;
 
-    [System.Serializable]
-    public class ResourceCost
-    {
-        public string resourceName;
-        public int amount;
-    }
-
-    [System.Serializable]
-    public class Building
-    {
-        public string name;
-        public GameObject prefab;
-        public List<ResourceCost> cost = new List<ResourceCost>();
-    }
-
-    public List<Building> availableBuildings = new List<Building>();
+    public GameObject buildingPrefab;
+    private GameObject currentBuilding;
+    private bool isPlacing;
 
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -35,24 +20,38 @@ public class BuildingSystem : MonoBehaviour
         }
     }
 
-    public bool CanPlaceBuilding(Building building, Vector2 position)
+    private void Update()
     {
-        // 위치가 유효하고 자원이 사용 가능한지 확인
-        return true; // 임시 플레이스홀더
+        if (isPlacing)
+        {
+            MoveBuildingToMouse();
+            if (Input.GetMouseButtonDown(0))
+            {
+                PlaceBuilding();
+            }
+        }
     }
 
-    public void PlaceBuilding(Building building, Vector2 position)
+    public void StartPlacingBuilding(GameObject building)
     {
-        if (CanPlaceBuilding(building, position))
+        if (currentBuilding != null)
         {
-            // 자원 차감
-            foreach (var resource in building.cost)
-            {
-                ResourceManager.Instance.UseResource(resource.resourceName, resource.amount);
-            }
-
-            // 건물 인스턴스화
-            Instantiate(building.prefab, position, Quaternion.identity);
+            Destroy(currentBuilding);
         }
+        currentBuilding = Instantiate(building);
+        isPlacing = true;
+    }
+
+    private void MoveBuildingToMouse()
+    {
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mousePosition.z = 0;
+        currentBuilding.transform.position = mousePosition;
+    }
+
+    private void PlaceBuilding()
+    {
+        isPlacing = false;
+        currentBuilding = null;
     }
 }

@@ -124,4 +124,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1f58e71ff089ed4ebb915ca4ed82c87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mineSpeed: 1
+  resourceTilemap: {fileID: 0}
+  resourceIngotPrefab: {fileID: 7798952082754168639, guid: 3af5839fa8965514c9a8881ae0fb041a, type: 3}
+  miningSpeed: 1
