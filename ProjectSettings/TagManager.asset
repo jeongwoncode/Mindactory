@@ -9,6 +9,7 @@ TagManager:
   - Miner
   - Smelter
   - Conveyor
+  - Ingot
   layers:
   - Default
   - TransparentFX

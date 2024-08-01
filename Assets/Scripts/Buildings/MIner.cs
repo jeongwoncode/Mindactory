@@ -4,14 +4,15 @@ using UnityEngine.Tilemaps;
 
 public class Miner : MonoBehaviour
 {
-    public GameObject resourceIngotPrefab;
+    public Tilemap resourceTilemap; // 자원 타일맵
+    public GameObject ironIngotPrefab;
+    public GameObject copperIngotPrefab;
     public float miningSpeed = 1.0f;
-    private Tilemap resourceTilemap;
+
+    private GameObject storedIngot;
 
     private void Start()
     {
-        // 스크립트로 Tilemap 찾기
-        resourceTilemap = GameObject.Find("ResourceTilemap").GetComponent<Tilemap>();
         StartCoroutine(MineResource());
     }
 
@@ -19,20 +20,45 @@ public class Miner : MonoBehaviour
     {
         while (true)
         {
-            Vector3Int cellPosition = resourceTilemap.WorldToCell(transform.position);
-            TileBase resourceTile = resourceTilemap.GetTile(cellPosition);
+            Vector3Int gridPosition = resourceTilemap.WorldToCell(transform.position);
+            TileBase tile = resourceTilemap.GetTile(gridPosition);
 
-            if (resourceTile != null)
+            if (tile != null)
             {
-                // Ingot을 생성하여 컨베이어에 배치
-                Instantiate(resourceIngotPrefab, transform.position, Quaternion.identity);
-            }
-            else
-            {
-                Debug.LogError("No resource found at this location.");
+                GameObject ingotPrefab = null;
+
+                if (tile.name == "Ironore")
+                {
+                    ingotPrefab = ironIngotPrefab;
+                }
+                else if (tile.name == "Copperore")
+                {
+                    ingotPrefab = copperIngotPrefab;
+                }
+
+                if (ingotPrefab != null)
+                {
+                    // 자원 생성 및 저장
+                    storedIngot = Instantiate(ingotPrefab, transform.position, Quaternion.identity);
+                    storedIngot.SetActive(false);
+
+                    // 인접한 컨베이어 확인
+                    Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, 1f);
+                    foreach (var hitCollider in hitColliders)
+                    {
+                        Conveyor conveyor = hitCollider.GetComponent<Conveyor>();
+                        if (conveyor != null)
+                        {
+                            // 컨베이어에 자원 전달
+                            conveyor.ReceiveIngot(storedIngot);
+                            storedIngot = null;
+                            break;
+                        }
+                    }
+                }
             }
 
-            yield return new WaitForSeconds(1 / miningSpeed);
+            yield return new WaitForSeconds(1f / miningSpeed);
         }
     }
 }

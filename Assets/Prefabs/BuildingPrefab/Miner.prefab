@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5943416740518796841}
   - component: {fileID: 5943416740518796847}
   - component: {fileID: 7275923621559471877}
+  - component: {fileID: 5770205348553753705}
   m_Layer: 0
   m_Name: Miner
   m_TagString: Miner
@@ -26,13 +27,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5943416740518796842}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3.34, y: -0.42, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5943416740518796841
 SpriteRenderer:
@@ -96,7 +97,26 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -110,7 +130,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.5, y: 1.5}
   m_EdgeRadius: 0
 --- !u!114 &7275923621559471877
 MonoBehaviour:
@@ -124,6 +144,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1f58e71ff089ed4ebb915ca4ed82c87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resourceTilemap: {fileID: 0}
-  resourceIngotPrefab: {fileID: 7798952082754168639, guid: 3af5839fa8965514c9a8881ae0fb041a, type: 3}
+  resourceTilemap: {fileID: 7162547009166305450, guid: d47be06bcf154d548862771ffeed67ed, type: 3}
+  ironIngotPrefab: {fileID: 7798952082754168639, guid: 3af5839fa8965514c9a8881ae0fb041a, type: 3}
+  copperIngotPrefab: {fileID: 5595751842877637751, guid: 49dfaa9fc5a55ce4d8cdc6e5389d8f40, type: 3}
   miningSpeed: 1
+--- !u!50 &5770205348553753705
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5943416740518796842}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
